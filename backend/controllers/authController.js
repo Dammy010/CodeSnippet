@@ -13,8 +13,8 @@ const generateToken = (user) => {
 
 const cookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'Lax',
+  secure: true,             // ✅ Required for HTTPS (e.g., Vercel)
+  sameSite: 'None',         // ✅ Allows cross-site cookies
   maxAge: 24 * 60 * 60 * 1000, // 1 day
 };
 
@@ -74,8 +74,8 @@ exports.logoutUser = async (req, res) => {
 
     res.clearCookie('token', {
       httpOnly: true,
-      secure: true,
-      sameSite: 'Lax',
+      secure: true,       // ✅ must match original cookie
+      sameSite: 'None',   // ✅ must match original cookie
     });
 
     return res.status(200).json({ message: 'Logged out successfully' });
