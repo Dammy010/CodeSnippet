@@ -64,14 +64,23 @@ exports.loginUser = async (req, res) => {
 exports.logoutUser = async (req, res) => {
   try {
     const token = req.cookies.token;
-    if (!token) return res.status(400).json({ message: 'No token found in cookies' });
 
-    addToBlacklist(token);
-    res.clearCookie('token').status(200).json({ message: 'Logged out successfully' });
+    if (token) {
+      addToBlacklist(token);
+    }
+
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Lax',
+    });
+
+    res.status(200).json({ message: 'Logged out successfully' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 exports.getCurrentUser = async (req, res) => {
   try {
