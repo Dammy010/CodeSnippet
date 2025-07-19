@@ -31,6 +31,7 @@ exports.registerUser = async (req, res) => {
     await user.save();
 
     const token = generateToken(user);
+    console.log('Generated Token (Register):', token);
 
     res
       .cookie('token', token, cookieOptions)
@@ -52,6 +53,7 @@ exports.loginUser = async (req, res) => {
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
     const token = generateToken(user);
+    console.log('Generated Token (Login):', token);
 
     res
       .cookie('token', token, cookieOptions)
@@ -64,9 +66,10 @@ exports.loginUser = async (req, res) => {
 exports.logoutUser = async (req, res) => {
   try {
     const token = req.cookies.token;
+    console.log('Token on Logout:', token);
 
     if (token) {
-      addToBlacklist(token); 
+      addToBlacklist(token);
     }
 
     res.clearCookie('token', {
@@ -81,10 +84,9 @@ exports.logoutUser = async (req, res) => {
   }
 };
 
-
 exports.getCurrentUser = async (req, res) => {
   try {
-    const user = req.user; 
+    const user = req.user;
     if (!user) return res.status(401).json({ message: 'Not authenticated' });
 
     res.status(200).json({ user });
