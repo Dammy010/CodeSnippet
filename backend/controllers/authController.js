@@ -66,25 +66,25 @@ exports.logoutUser = async (req, res) => {
     const token = req.cookies.token;
 
     if (token) {
-      addToBlacklist(token);
+      addToBlacklist(token); 
     }
 
     res.clearCookie('token', {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       sameSite: 'Lax',
     });
 
-    res.status(200).json({ message: 'Logged out successfully' });
+    return res.status(200).json({ message: 'Logged out successfully' });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
 
 exports.getCurrentUser = async (req, res) => {
   try {
-    const user = req.user; // set in authenticateUser middleware
+    const user = req.user; 
     if (!user) return res.status(401).json({ message: 'Not authenticated' });
 
     res.status(200).json({ user });
