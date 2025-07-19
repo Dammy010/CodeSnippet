@@ -13,7 +13,7 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 
 // Protected routes
-router.post('/logout', authenticateUser, logoutUser);
+router.post('/logout', logoutUser);
 router.get('/me', authenticateUser, getCurrentUser);
 
 module.exports = router;
