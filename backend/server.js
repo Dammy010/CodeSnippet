@@ -11,10 +11,22 @@ const { authenticateUser } = require('./middleware/auth');
 dotenv.config();
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://code-snippet-1vg6.vercel.app'
+];
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'https://code-snippet-1vg6.vercel.app', 
-  credentials: true, 
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS not allowed for this origin'));
+    }
+  },
+  credentials: true,
 }));
+
 app.use(cookieParser());
 app.use(express.json());
 
