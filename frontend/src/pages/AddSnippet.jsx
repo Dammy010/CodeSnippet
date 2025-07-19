@@ -21,7 +21,7 @@ export default function AddSnippet() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/snippets', form);
+      await axios.post('/snippets', form);
       navigate('/snippets');
     } catch (err) {
       alert(err.response?.data?.message || 'Error adding snippet');
